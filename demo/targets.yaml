@@ -1,0 +1,16 @@
+# Sample targets file for real monitoring.
+# Copy to uptimebeacon.yaml and edit, or build it with:
+#   python -m uptimebeacon add --name api --url https://api.example.com/health
+database: uptimebeacon.db
+targets:
+  - name: website
+    url: https://example.com
+    interval: 300
+    timeout: 10
+    expected_status: [200]
+  - name: api
+    url: https://api.example.com/health
+    interval: 60
+    timeout: 10
+    expected_status: [200]
+    keyword: '"ok"'

@@ -1,0 +1,20 @@
+[project]
+name = "uptimebeacon"
+version = "0.1.0"
+description = "Uptime monitor with incident log and a static status page"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Parth", email = "872000@users.noreply.github.com" }]
+dependencies = []
+
+[project.scripts]
+uptimebeacon = "uptimebeacon.cli:main"
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
