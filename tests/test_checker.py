@@ -13,7 +13,10 @@ from uptimebeacon.config import Target
 
 
 class Handler(BaseHTTPRequestHandler):
+    seen_user_agents: list[str] = []
+
     def do_GET(self):
+        Handler.seen_user_agents.append(self.headers.get("User-Agent", ""))
         if self.path == "/ok":
             body, code = b'{"status":"ok"}', 200
         elif self.path == "/teapot":
@@ -86,3 +89,10 @@ def test_timeout_is_a_clean_failure(server):
 def test_checker_never_raises():
     r = check_target(_target("bad-scheme", "http://[::1]:99999/", timeout=1))
     assert not r.ok
+
+
+def test_user_agent_identifies_service(server):
+    Handler.seen_user_agents.clear()
+    r = check_target(_target("ua", server + "/ok"))
+    assert r.ok
+    assert any(ua.startswith("UptimeBeacon/") for ua in Handler.seen_user_agents)
