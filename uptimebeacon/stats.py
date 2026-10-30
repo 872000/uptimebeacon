@@ -60,6 +60,8 @@ def sparkline_points(rows, max_points: int = 60) -> list[tuple[float, float | No
     """
     if not rows:
         return []
-    step = max(1, len(rows) // max_points)
+    # Ceiling division: floor division can overshoot the cap (e.g. 121
+    # rows with max_points=60 gives step 2 and 61 sampled points).
+    step = max(1, math.ceil(len(rows) / max_points))
     sampled = rows[::step]
     return [(r["ts"], r["latency_ms"] if r["ok"] else None) for r in sampled]

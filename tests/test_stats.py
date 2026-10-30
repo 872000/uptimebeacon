@@ -55,6 +55,13 @@ def test_uptime_windows_no_data():
     assert all(v is None for v in up.values())
 
 
+def test_sparkline_points_respects_max_points():
+    rows = _rows([(i, True, 100.0 + i) for i in range(121)])
+    pts = stats.sparkline_points(rows, max_points=60)
+    assert len(pts) <= 60
+    assert pts[0][1] == 100.0
+
+
 def test_sparkline_points_marks_failures_as_gaps():
     rows = _rows([(30, True, 120.0), (20, False, None), (10, True, 130.0)])
     pts = stats.sparkline_points(rows)
